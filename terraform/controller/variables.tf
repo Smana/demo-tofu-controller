@@ -40,16 +40,16 @@ variable "github_token" {
   sensitive   = true
 }
 
-variable "repository_name" {
+variable "github_repository" {
   type        = string
   description = "github repository name"
 }
 
-variable "branch" {
-  type        = string
-  default     = "main"
-  description = "branch name"
-}
+# variable "branch" {
+#   type        = string
+#   default     = "main"
+#   description = "branch name"
+# }
 
 variable "tags" {
   description = "A map of tags to add to all resources"

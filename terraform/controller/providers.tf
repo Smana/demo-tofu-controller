@@ -2,7 +2,20 @@ provider "aws" {
   region = var.region
 }
 
-provider "flux" {}
+provider "flux" {
+  kubernetes = {
+    host                   = module.eks.cluster_endpoint
+    token                  = data.aws_eks_cluster_auth.cluster_auth.token
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  }
+  git = {
+    url = "ssh://git@github.com/${var.github_owner}/${var.github_repository}.git"
+    ssh = {
+      username    = "git"
+      private_key = tls_private_key.flux.private_key_pem
+    }
+  }
+}
 
 
 provider "kubectl" {
