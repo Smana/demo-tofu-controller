@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret
+  namespace: flux-system
+type: Opaque
+stringData:
+  cluster_name: "controller-0"
