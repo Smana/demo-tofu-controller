@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  cluster_name: dev-0
+  env: dev
+kind: ConfigMap
+metadata:
+  name: tfvars-dev-hiving-hen
+  namespace: flux-system
