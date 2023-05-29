@@ -48,11 +48,9 @@ tags = {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.0.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
 | <a name="provider_flux"></a> [flux](#provider\_flux) | 1.0.0-rc.3 |
-| <a name="provider_github"></a> [github](#provider\_github) | 5.25.1 |
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 1.14.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.20.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | ~> 5.25 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 3.1.0 |
 
 ## Modules
@@ -67,35 +65,24 @@ tags = {
 
 | Name | Type |
 |------|------|
-| [github_branch_default.main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
-| [github_repository_deploy_key.main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
-| [github_repository_file.install](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_file) | resource |
-| [github_repository_file.kustomize](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_file) | resource |
-| [github_repository_file.sync](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_file) | resource |
-| [kubectl_manifest.install](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
-| [kubectl_manifest.sync](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
-| [kubernetes_namespace.flux_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_secret.main](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [tls_private_key.main](https://registry.terraform.io/providers/hashicorp/tls/3.1.0/docs/resources/private_key) | resource |
+| [flux_bootstrap_git.this](https://registry.terraform.io/providers/fluxcd/flux/1.0.0-rc.3/docs/resources/bootstrap_git) | resource |
+| [github_repository_deploy_key.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
+| [tls_private_key.flux](https://registry.terraform.io/providers/hashicorp/tls/3.1.0/docs/resources/private_key) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [flux_install.main](https://registry.terraform.io/providers/fluxcd/flux/1.0.0-rc.3/docs/data-sources/install) | data source |
-| [flux_sync.main](https://registry.terraform.io/providers/fluxcd/flux/1.0.0-rc.3/docs/data-sources/sync) | data source |
-| [kubectl_file_documents.install](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/data-sources/file_documents) | data source |
-| [kubectl_file_documents.sync](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/data-sources/file_documents) | data source |
+| [aws_eks_cluster_auth.cluster_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_branch"></a> [branch](#input\_branch) | branch name | `string` | `"main"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster to be created | `string` | n/a | yes |
 | <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | k8s cluster version | `string` | `"1.25"` | no |
 | <a name="input_env"></a> [env](#input\_env) | The environment of the EKS cluster | `string` | n/a | yes |
 | <a name="input_github_owner"></a> [github\_owner](#input\_github\_owner) | github owner | `string` | n/a | yes |
+| <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | github repository name | `string` | n/a | yes |
 | <a name="input_github_token"></a> [github\_token](#input\_github\_token) | github token | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | `"eu-west-3"` | no |
-| <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | github repository name | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | The IPv4 CIDR block for the VPC | `string` | `"10.0.0.0/16"` | no |
 
