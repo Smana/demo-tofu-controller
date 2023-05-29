@@ -3,12 +3,3 @@ kind: Kustomization
 
 resources:
   - ../../../base/tf-controller
-
-patches:
-  - path: helmrelease.yaml
-    target:
-      group: helm.toolkit.fluxcd.io
-      kind: HelmRelease
-      name: tf-controller
-      namespace: flux-system
-      version: v2beta1

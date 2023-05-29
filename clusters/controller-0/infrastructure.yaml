@@ -11,23 +11,36 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substitute:
+      cluster_name: "dev-0"
+      environment: "dev"
+      region: "eu-west-3"
+      aws_account_id: "396740644681"
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-vars
+        optional: true
+      - kind: Secret
+        name: cluster-vars
+        optional: true
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
       name: tf-controller
       namespace: flux-system
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: tf-controller-custom-resources
-  namespace: flux-system
-spec:
-  prune: true
-  interval: 4m0s
-  path: ./infrastructure/controller-0/terraform/custom-resources
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  dependsOn:
-    - name: tf-controller
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: tf-controller-custom-resources
+#   namespace: flux-system
+# spec:
+#   prune: true
+#   interval: 4m0s
+#   path: ./infrastructure/controller-0/terraform/custom-resources
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#   dependsOn:
+#     - name: tf-controller

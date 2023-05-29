@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30s
-  url: https://github.com/Smana/flux-karpenter
+  url: https://github.com/Smana/demo-tf-controller
   ref:
     branch: main
 ---

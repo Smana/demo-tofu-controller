@@ -11,6 +11,19 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substitute:
+      cluster_name: "controller-0"
+      environment: "prod"
+      region: "eu-west-3"
+      aws_account_id: "396740644681" # This is my sandbox account, replace with your own
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-vars
+        optional: true
+      - kind: Secret
+        name: cluster-vars
+        optional: true
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
