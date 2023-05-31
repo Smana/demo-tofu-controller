@@ -15,7 +15,7 @@ spec:
     namespace: flux-system
   vars:
     - name: role_name
-      value: ${cluster_name}_load-balancer-controller
+      value: ${cluster_name}-load-balancer-controller
     - name: attach_load_balancer_controller_policy
       value: true
     - name: oidc_providers
