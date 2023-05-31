@@ -15,3 +15,18 @@ resource "flux_bootstrap_git" "this" {
 
   path = "clusters/${var.cluster_name}"
 }
+
+resource "kubernetes_config_map" "flux_clusters_vars" {
+  metadata {
+    name      = "cluster-vars"
+    namespace = "flux-system"
+  }
+
+  data = {
+    cluster_name      = var.cluster_name
+    oidc_provider_arn = module.eks.oidc_provider_arn
+    aws_account_id    = data.aws_caller_identity.this.account_id
+    region            = var.region
+    environment       = var.env
+  }
+}

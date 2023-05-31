@@ -12,11 +12,6 @@ spec:
     kind: GitRepository
     name: flux-system
   postBuild:
-    substitute:
-      cluster_name: "controller-0"
-      environment: "prod"
-      region: "eu-west-3"
-      aws_account_id: "396740644681"
     substituteFrom:
       - kind: ConfigMap
         name: cluster-vars
