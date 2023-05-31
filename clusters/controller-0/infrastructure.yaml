@@ -56,7 +56,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controller-0/terraform/custom-resources
+  path: ./infrastructure/controller-0
   postBuild:
     substituteFrom:
       - kind: ConfigMap
