@@ -17,18 +17,18 @@ spec:
     remediation:
       retries: 3
   values:
-    clusterName: "${cluster_name}"
+    clusterName: ${cluster_name}
     serviceAccount:
       # Has to match the policy created using terraform (IRSA)
-      name: aws-load-balancer-controller
+      name: load-balancer-controller
       annotations:
         eks.amazonaws.com/role-arn: "arn:aws:iam::${aws_account_id}:role/alb_controller_${cluster_name}"
     defaultTags:
-      billing: k8s
-      environment: "${environment}"
+      environment: ${environment}
+      clusterName: ${cluster_name}
     replicaCount: 1
     resources:
       limits:
         cpu: 100m
         memory: 128Mi
-    # vpcId: vpc-0695fe84adadbdf12
+    vpcId: ${vpc_id}
