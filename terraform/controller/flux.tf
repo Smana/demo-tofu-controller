@@ -30,4 +30,5 @@ resource "kubernetes_config_map" "flux_clusters_vars" {
     environment       = var.env
     vpc_id            = module.vpc.vpc_id
   }
+  depends_on = [flux_bootstrap_git.this]
 }

@@ -15,7 +15,7 @@ spec:
   vars:
     - name: zones
       value:
-        cloud-ogenki-io:
+        "cloud.ogenki.io":
           comment: "Experimentations for blog.ogenki.io"
           tags:
             Name: "cloud.ogenki.io"
