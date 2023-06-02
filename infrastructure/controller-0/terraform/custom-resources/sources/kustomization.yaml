@@ -2,4 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - terraform-aws-acm.yaml
   - terraform-aws-iam.yaml
+  - terraform-aws-route53.yaml

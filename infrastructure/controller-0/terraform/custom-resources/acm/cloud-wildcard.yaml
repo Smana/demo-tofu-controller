@@ -1,0 +1,28 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: acm-cloud
+spec:
+  approvePlan: auto
+  destroyResourcesOnDeletion: false
+  interval: 8m
+  path: ./
+  sourceRef:
+    kind: GitRepository
+    name: terraform-aws-acm
+    namespace: flux-system
+  vars:
+    - name: subject_alternative_names
+      value:
+        - "*.cloud.ogenki.io"
+    - name: wait_for_validation
+      value: true
+    - name: tags
+      value:
+        Name: "cloud.ogenki.io"
+  varsFrom:
+    - kind: Secret
+      name: route53-cloud-hostedzone
+  writeOutputsToSecret:
+    name: acm-cloud
