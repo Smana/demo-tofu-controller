@@ -22,5 +22,5 @@ spec:
   writeOutputsToSecret:
     name: route53-cloud-hostedzone
     outputs:
-      - route53_zone_name:domain_name
-      - route53_zone_zone_id:zone_id
+      - route53_zone_name."cloud.ogenki.io":domain_name
+      - route53_zone_zone_id."cloud.ogenki.io":zone_id
