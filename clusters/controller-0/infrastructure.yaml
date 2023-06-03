@@ -14,10 +14,10 @@ spec:
   postBuild:
     substituteFrom:
       - kind: ConfigMap
-        name: cluster-vars
+        name: eks-controller-0-vars
         optional: true
       - kind: Secret
-        name: cluster-vars
+        name: eks-controller-0-vars
         optional: true
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
