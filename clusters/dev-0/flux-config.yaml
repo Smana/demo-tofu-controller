@@ -19,10 +19,10 @@ spec:
       aws_account_id: "396740644681" # This is my sandbox account, replace with your own
     substituteFrom:
       - kind: ConfigMap
-        name: cluster-vars
+        name: eks-dev-0-vars
         optional: true
       - kind: Secret
-        name: cluster-vars
+        name: eks-dev-0-vars
         optional: true
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
