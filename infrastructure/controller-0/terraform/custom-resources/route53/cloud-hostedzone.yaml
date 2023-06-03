@@ -7,7 +7,7 @@ spec:
   approvePlan: auto
   destroyResourcesOnDeletion: false
   interval: 8m
-  path: ./modules/route53-zone
+  path: ./terraform/modules/route53-zone
   sourceRef:
     kind: GitRepository
     name: terraform-demo-tf-controller
