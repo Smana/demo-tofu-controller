@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - terraform-aws-acm.yaml
   - terraform-aws-iam.yaml
-  - terraform-aws-route53.yaml
+  - terraform-demo-tf-controller.yaml
