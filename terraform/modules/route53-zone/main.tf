@@ -6,7 +6,7 @@ resource "aws_route53_zone" "this" {
   delegation_set_id = var.delegation_set_id
 
   dynamic "vpc" {
-    for_each = try(tolist(var.vpc))
+    for_each = var.vpc
 
     content {
       vpc_id     = vpc.value.vpc_id
