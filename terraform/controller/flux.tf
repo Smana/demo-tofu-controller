@@ -18,7 +18,7 @@ resource "flux_bootstrap_git" "this" {
 
 resource "kubernetes_config_map" "flux_clusters_vars" {
   metadata {
-    name      = "cluster-vars"
+    name      = "eks-${var.cluster_name}-vars"
     namespace = "flux-system"
   }
 

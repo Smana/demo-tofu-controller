@@ -22,7 +22,7 @@ spec:
       # Has to match the policy created using terraform (IRSA)
       name: load-balancer-controller
       annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::${aws_account_id}:role/alb_controller_${cluster_name}"
+        eks.amazonaws.com/role-arn: "arn:aws:iam::${aws_account_id}:role/${cluster_name}-load-balancer-controller"
     defaultTags:
       environment: ${environment}
       clusterName: ${cluster_name}
