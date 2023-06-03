@@ -7,20 +7,21 @@ spec:
   approvePlan: auto
   destroyResourcesOnDeletion: false
   interval: 8m
-  path: ./modules/zones
+  path: ./modules/route53-zone
   sourceRef:
     kind: GitRepository
-    name: terraform-aws-route53
+    name: terraform-demo-tf-controller
     namespace: flux-system
   vars:
-    - name: zones
+    - name: domain_name
+      value: "cloud.ogenki.io"
+    - name: comment
+      value: "Experimentations for blog.ogenki.io"
+    - name: tags
       value:
-        "cloud.ogenki.io":
-          comment: "Experimentations for blog.ogenki.io"
-          tags:
-            Name: "cloud.ogenki.io"
+        Name: "cloud.ogenki.io"
   writeOutputsToSecret:
     name: route53-cloud-hostedzone
     outputs:
-      - route53_zone_name."cloud.ogenki.io":domain_name
-      - route53_zone_zone_id."cloud.ogenki.io":zone_id
+      - domain_name
+      - zone_id
