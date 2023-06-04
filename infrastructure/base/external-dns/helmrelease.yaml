@@ -27,7 +27,7 @@ spec:
       zoneType: "public"
       batchChangeSize: 1000
 
-    domainFilters: ["cloud.ogenki.io"]
+    domainFilters: ["${domain_name}"]
     logFormat: json
     txtOwnerId: "${cluster_name}"
     serviceAccount:

@@ -12,10 +12,11 @@ spec:
     kind: GitRepository
     name: flux-system
   postBuild:
+    substitute:
+      domain_name: "cloud.ogenki.io"
     substituteFrom:
       - kind: ConfigMap
         name: eks-controller-0-vars
-        optional: true
       - kind: Secret
         name: eks-controller-0-vars
         optional: true
@@ -35,10 +36,11 @@ spec:
   interval: 4m0s
   path: ./infrastructure/controller-0/terraform/custom-resources
   postBuild:
+    substitute:
+      domain_name: "cloud.ogenki.io"
     substituteFrom:
       - kind: ConfigMap
         name: eks-controller-0-vars
-        optional: true
       - kind: Secret
         name: eks-controller-0-vars
         optional: true
@@ -61,7 +63,6 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: eks-controller-0-vars
-        optional: true
       - kind: Secret
         name: eks-controller-0-vars
         optional: true

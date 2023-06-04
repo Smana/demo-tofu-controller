@@ -14,12 +14,12 @@ spec:
     namespace: flux-system
   vars:
     - name: domain_name
-      value: "cloud.ogenki.io"
+      value: "${domain_name}"
     - name: comment
       value: "Experimentations for blog.ogenki.io"
     - name: tags
       value:
-        Name: "cloud.ogenki.io"
+        Name: "${domain_name}"
   writeOutputsToSecret:
     name: route53-cloud-hostedzone
     outputs:

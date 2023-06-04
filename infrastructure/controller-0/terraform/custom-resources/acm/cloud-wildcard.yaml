@@ -15,12 +15,12 @@ spec:
   vars:
     - name: subject_alternative_names
       value:
-        - "*.cloud.ogenki.io"
+        - "*.${domain_name}"
     - name: wait_for_validation
       value: true
     - name: tags
       value:
-        Name: "cloud.ogenki.io"
+        Name: "${domain_name}"
   varsFrom:
     - kind: Secret
       name: route53-cloud-hostedzone
