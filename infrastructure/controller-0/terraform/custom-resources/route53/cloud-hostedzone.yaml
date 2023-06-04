@@ -1,0 +1,27 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: route53-cloud-hostedzone
+spec:
+  approvePlan: auto
+  destroyResourcesOnDeletion: false
+  interval: 8m
+  path: ./terraform/modules/route53-zone
+  sourceRef:
+    kind: GitRepository
+    name: terraform-demo-tf-controller
+    namespace: flux-system
+  vars:
+    - name: domain_name
+      value: "${domain_name}"
+    - name: comment
+      value: "Experimentations for blog.ogenki.io"
+    - name: tags
+      value:
+        Name: "${domain_name}"
+  writeOutputsToSecret:
+    name: route53-cloud-hostedzone
+    outputs:
+      - domain_name
+      - zone_id

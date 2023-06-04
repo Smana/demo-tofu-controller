@@ -1,0 +1,119 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tf-controller
+  namespace: flux-system
+spec:
+  prune: true
+  interval: 4m0s
+  path: ./infrastructure/controller-0/terraform/controller
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substitute:
+      domain_name: "cloud.ogenki.io"
+    substituteFrom:
+      - kind: ConfigMap
+        name: eks-controller-0-vars
+      - kind: Secret
+        name: eks-controller-0-vars
+        optional: true
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: tf-controller
+      namespace: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tf-irsa-controller-0
+  namespace: flux-system
+spec:
+  prune: true
+  interval: 4m0s
+  path: ./infrastructure/controller-0/terraform/irsa/controller-0
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: eks-controller-0-vars
+      - kind: Secret
+        name: eks-controller-0-vars
+        optional: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+    - name: tf-controller
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tf-custom-resources
+  namespace: flux-system
+spec:
+  prune: true
+  interval: 4m0s
+  path: ./infrastructure/controller-0/terraform/custom-resources
+  postBuild:
+    substitute:
+      domain_name: "cloud.ogenki.io"
+    substituteFrom:
+      - kind: ConfigMap
+        name: eks-controller-0-vars
+      - kind: Secret
+        name: eks-controller-0-vars
+        optional: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+    - name: tf-controller
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infrastructure
+  namespace: flux-system
+spec:
+  prune: true
+  interval: 4m0s
+  path: ./infrastructure/controller-0
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: eks-controller-0-vars
+      - kind: Secret
+        name: eks-controller-0-vars
+        optional: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+    - name: tf-irsa
+    - name: tf-custom-resources
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tf-irsa-dev-0
+  namespace: flux-system
+spec:
+  prune: true
+  interval: 4m0s
+  path: ./infrastructure/controller-0/terraform/irsa/dev-0
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: dev-0-vars
+      - kind: Secret
+        name: dev-0-vars
+        optional: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+    - name: tf-custom-resources
+    - name: tf-controller

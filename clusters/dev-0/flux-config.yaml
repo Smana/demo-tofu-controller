@@ -1,0 +1,31 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-config
+  namespace: flux-system
+spec:
+  prune: true
+  interval: 4m0s
+  path: ./flux-config/dev-hiving-bee
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substitute:
+      cluster_name: "dev-0"
+      environment: "dev"
+      region: "eu-west-3"
+      aws_account_id: "396740644681" # This is my sandbox account, replace with your own
+    substituteFrom:
+      - kind: ConfigMap
+        name: eks-dev-0-vars
+        optional: true
+      - kind: Secret
+        name: eks-dev-0-vars
+        optional: true
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: weave-gitops
+      namespace: flux-system
