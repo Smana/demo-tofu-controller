@@ -1,0 +1,43 @@
+name: oci-push
+
+on:
+  push:
+    branches:
+      - "!*"
+    tags:
+      - "v*"
+
+permissions:
+  packages: write
+
+env:
+  OCI_REPO: "oci://ghcr.io/smana/${{ github.event.repository.name }}/modules"
+
+jobs:
+  modules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Get latest tag'
+        id: latesttag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      - name: Push Terraform modules
+        run: |
+          flux push artifact $OCI_REPO:$(git rev-parse --short HEAD) \
+            --path="./terraform/modules" \
+            --source="$(git config --get remote.origin.url)" \
+            --revision="$(git branch --show-current)@sha1:$(git rev-parse HEAD)"
+      - name: Tag the OCI registry
+        run: |
+          flux tag artifact $OCI_REPO:$(git rev-parse --short HEAD) --tag "${{ steps.latesttag.outputs.tag }}"
