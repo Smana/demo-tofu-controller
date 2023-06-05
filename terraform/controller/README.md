@@ -38,7 +38,7 @@ tags = {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-| <a name="requirement_flux"></a> [flux](#requirement\_flux) | 1.0.0-rc.3 |
+| <a name="requirement_flux"></a> [flux](#requirement\_flux) | 1.0.0-rc.5 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | ~> 5.25 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.14.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.20 |
@@ -49,7 +49,7 @@ tags = {
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
-| <a name="provider_flux"></a> [flux](#provider\_flux) | 1.0.0-rc.3 |
+| <a name="provider_flux"></a> [flux](#provider\_flux) | 1.0.0-rc.5 |
 | <a name="provider_github"></a> [github](#provider\_github) | ~> 5.25 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.20 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 3.1.0 |
@@ -66,7 +66,7 @@ tags = {
 
 | Name | Type |
 |------|------|
-| [flux_bootstrap_git.this](https://registry.terraform.io/providers/fluxcd/flux/1.0.0-rc.3/docs/resources/bootstrap_git) | resource |
+| [flux_bootstrap_git.this](https://registry.terraform.io/providers/fluxcd/flux/1.0.0-rc.5/docs/resources/bootstrap_git) | resource |
 | [github_repository_deploy_key.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
 | [kubernetes_config_map.flux_clusters_vars](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [tls_private_key.flux](https://registry.terraform.io/providers/hashicorp/tls/3.1.0/docs/resources/private_key) | resource |

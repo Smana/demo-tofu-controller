@@ -4,6 +4,5 @@ namespace: flux-system
 
 resources:
   - acm
-  - irsa
   - route53
   - sources
