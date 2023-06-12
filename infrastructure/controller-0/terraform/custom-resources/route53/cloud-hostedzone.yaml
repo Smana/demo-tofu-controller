@@ -5,7 +5,7 @@ metadata:
   name: route53-cloud-hostedzone
 spec:
   approvePlan: auto
-  destroyResourcesOnDeletion: false
+  destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
   interval: 8m
   path: ./terraform/modules/route53-zone
   sourceRef:

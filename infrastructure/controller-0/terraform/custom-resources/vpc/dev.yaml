@@ -6,6 +6,7 @@ metadata:
 spec:
   interval: 8m
   path: .
+  destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
   sourceRef:
     kind: GitRepository
     name: terraform-aws-vpc
