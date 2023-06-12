@@ -92,7 +92,7 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-    - name: tf-irsa
+    - name: tf-irsa-controller-0
     - name: tf-custom-resources
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -107,9 +107,9 @@ spec:
   postBuild:
     substituteFrom:
       - kind: ConfigMap
-        name: dev-0-vars
+        name: eks-dev-0-vars
       - kind: Secret
-        name: dev-0-vars
+        name: eks-dev-0-vars
         optional: true
   sourceRef:
     kind: GitRepository

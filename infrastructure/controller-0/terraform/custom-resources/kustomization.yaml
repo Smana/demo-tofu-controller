@@ -6,3 +6,4 @@ resources:
   - acm
   - route53
   - sources
+  - vpc

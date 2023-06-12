@@ -16,7 +16,6 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: eks-controller-0-vars
-        optional: true
       - kind: Secret
         name: eks-controller-0-vars
         optional: true
