@@ -14,6 +14,8 @@ spec:
   vars:
     - name: cluster_name
       value: "dev-0"
+    - name: env
+      value: dev
   varsFrom:
     - kind: Secret
       name: vpc-dev
