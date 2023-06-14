@@ -1,4 +1,3 @@
----
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
@@ -7,6 +6,7 @@ spec:
   interval: 8m
   path: .
   destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
+  approvePlan: "plan-master@sha1:26c38a66f"
   sourceRef:
     kind: GitRepository
     name: terraform-aws-vpc
