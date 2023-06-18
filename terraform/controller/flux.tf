@@ -45,4 +45,5 @@ resource "kubernetes_secret" "flux_github_creds" {
     github_token      = var.github_token
     github_repository = var.github_repository
   }
+  depends_on = [flux_bootstrap_git.this]
 }
