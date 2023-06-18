@@ -32,3 +32,17 @@ resource "kubernetes_config_map" "flux_clusters_vars" {
   }
   depends_on = [flux_bootstrap_git.this]
 }
+
+# Write Github secrets in order to use them as variables with the tf-controller
+resource "kubernetes_secret" "flux_github_creds" {
+  metadata {
+    name      = "flux-github-creds"
+    namespace = "flux-system"
+  }
+
+  data = {
+    github_owner      = var.github_owner
+    github_token      = var.github_token
+    github_repository = var.github_repository
+  }
+}

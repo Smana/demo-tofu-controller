@@ -22,5 +22,7 @@ spec:
       varsKeys:
         - vpc_id
         - private_subnets
+    - kind: Secret
+      name: flux-github-creds
   writeOutputsToSecret:
     name: eks-dev-0-vars
