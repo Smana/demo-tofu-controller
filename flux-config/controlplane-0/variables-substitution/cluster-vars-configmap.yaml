@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 type: Opaque
 stringData:
-  cluster_name: "controller-0"
+  cluster_name: "controlplane-0"

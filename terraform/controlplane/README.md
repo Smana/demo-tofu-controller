@@ -16,7 +16,7 @@
 
 ```hcl
 env          = "mgmt"
-cluster_name = "controller-0" # Generated with petname
+cluster_name = "controlplane-0" # Generated with petname
 
 github_owner    = "Smana"
 github_token    = <REDACTED>
@@ -69,6 +69,7 @@ tags = {
 | [flux_bootstrap_git.this](https://registry.terraform.io/providers/fluxcd/flux/1.0.0-rc.5/docs/resources/bootstrap_git) | resource |
 | [github_repository_deploy_key.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
 | [kubernetes_config_map.flux_clusters_vars](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
+| [kubernetes_secret.flux_github_creds](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [tls_private_key.flux](https://registry.terraform.io/providers/hashicorp/tls/3.1.0/docs/resources/private_key) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
