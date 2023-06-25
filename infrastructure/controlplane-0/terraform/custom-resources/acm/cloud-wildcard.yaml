@@ -4,8 +4,8 @@ kind: Terraform
 metadata:
   name: acm-cloud
 spec:
-  approvePlan: auto
-  destroyResourcesOnDeletion: false
+  approvePlan: false
+  destroyResourcesOnDeletion: false # We want to keep it and restore its tfstate
   interval: 8m
   path: ./
   sourceRef:
