@@ -6,5 +6,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: v5.0.0
+    tag: v5.0.0
   url: https://github.com/terraform-aws-modules/terraform-aws-vpc
