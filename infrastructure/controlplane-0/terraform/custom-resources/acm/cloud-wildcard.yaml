@@ -5,6 +5,7 @@ metadata:
   name: acm-cloud
 spec:
   destroyResourcesOnDeletion: false # We want to keep it and restore its tfstate
+  storeReadablePlan: human
   interval: 8m
   path: ./
   sourceRef:
