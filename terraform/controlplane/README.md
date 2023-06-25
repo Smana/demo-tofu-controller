@@ -6,6 +6,7 @@
 * Use SPOT instances
 * Use bottlerocket AMI
 * Install and configure Flux
+* Write a secret that contains the cluster's specific variables that will be used with Flux. (please refer to [variables substitutions](https://fluxcd.io/flux/components/kustomize/kustomization/#post-build-variable-substitution))
 
 ## How to apply this?
 
