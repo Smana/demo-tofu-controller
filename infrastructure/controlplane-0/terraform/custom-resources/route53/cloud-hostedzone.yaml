@@ -3,7 +3,6 @@ kind: Terraform
 metadata:
   name: route53-cloud-hostedzone
 spec:
-  approvePlan: false
   destroyResourcesOnDeletion: false # We want to keep it and restore its tfstate
   interval: 8m
   path: ./terraform/modules/route53-zone
