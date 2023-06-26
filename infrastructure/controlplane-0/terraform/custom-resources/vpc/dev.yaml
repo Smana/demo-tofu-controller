@@ -6,7 +6,7 @@ spec:
   interval: 8m
   path: .
   destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
-  approvePlan: "plan-master@sha1:26c38a66f"
+  approvePlan: "plan-v5.0.0@sha1:26c38a66f1"
   sourceRef:
     kind: GitRepository
     name: terraform-aws-vpc

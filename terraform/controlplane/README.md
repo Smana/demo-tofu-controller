@@ -1,4 +1,4 @@
-# Management cluster
+# Control plane
 
 
 * Create a VPC (intra, private and public subnets)
