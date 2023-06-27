@@ -23,7 +23,11 @@ spec:
       requests:
         cpu: 200m
         memory: 500Mi
+    image:
+      tag: v0.15.0-rc.5
     runner:
+      image:
+        tag: v0.15.0-rc.5
       serviceAccount:
         annotations:
           eks.amazonaws.com/role-arn: "arn:aws:iam::${aws_account_id}:role/tfcontroller_${cluster_name}"
