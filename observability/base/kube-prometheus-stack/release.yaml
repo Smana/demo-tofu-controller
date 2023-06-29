@@ -1,0 +1,188 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+spec:
+  releaseName: kube-prometheus-stack
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: observability
+      version: "47.1.0"
+  interval: 10m0s
+  timeout: 30m
+  install:
+    remediation:
+      retries: 3
+    crds: Create
+    createNamespace: true
+  upgrade:
+    crds: CreateReplace
+  values:
+    global:
+      rbac:
+        createAggregateClusterRoles: true
+
+    alertmanager:
+      enabled: true
+      alertmanagerSpec:
+        replicas: 1
+        resources:
+          requests:
+            cpu: 50m
+            memory: 100Mi
+          limits:
+            cpu: 500m
+            memory: 100Mi
+        storage:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 10Gi
+              storageClassName: gp3
+        secrets:
+          - kube-prometheus-stack-alertmanager
+
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          group_by:
+            - cluster
+            - alertname
+            - severity
+          group_interval: 5m
+          group_wait: 30s
+          repeat_interval: 3h
+    commonLabels:
+      prometheus-instance: main
+    grafana:
+      admin:
+        existingSecret: "kube-prometheus-stack-grafana-admin"
+      defaultDashboardsEnabled: true
+      defaultDashboardsTimezone: Europe/Paris
+      ingress:
+        annotations:
+          alb.ingress.kubernetes.io/actions.ssl-redirect:
+            '{"Type": "redirect", "RedirectConfig":{
+            "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+          alb.ingress.kubernetes.io/group.name: observability
+          alb.ingress.kubernetes.io/healthcheck-path: /healthy
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+          alb.ingress.kubernetes.io/scheme: internal
+          alb.ingress.kubernetes.io/target-type: ip
+          kubernetes.io/ingress.class: alb
+        enabled: true
+        pathType: Prefix
+        paths:
+          - /
+      resources:
+        requests:
+          cpu: 150m
+          memory: 256Mi
+        limits:
+          cpu: 600m
+          memory: 256Mi
+      sidecar:
+        dashboards:
+          enabled: true
+          searchNamespace: ALL
+        datasources:
+          defaultDatasourceEnabled: true
+          enabled: true
+          isDefaultDatasource: false
+      dashboardProviders:
+        dashboardproviders.yaml:
+          apiVersion: 1
+          providers:
+            - name: "flux"
+              orgId: 1
+              folder: "Flux"
+              type: file
+              disableDeletion: true
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/flux
+      dashboards:
+        flux:
+          flux-controlplane:
+            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+            datasource: Prometheus
+          flux-cluster:
+            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
+            datasource: Prometheus
+    kube-state-metrics:
+      prometheusScrape: false # disable scrape annotation as we use servicemonitor
+      prometheus:
+        monitor:
+          additionalLabels:
+            prometheus-instance: main
+      metricLabelsAllowlist: jobs=[id]
+    kubeApiServer: # this works on eks but we dont use theses (very verboses) metrics
+      enabled: false
+    kubeControllerManager:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    prometheus-node-exporter:
+      service:
+        annotations:
+          prometheus.io/scrape: "false"
+      prometheus:
+        monitor:
+          additionalLabels:
+            prometheus-instance: main
+    prometheusOperator:
+      resources:
+        limits:
+          memory: 400Mi
+        requests:
+          cpu: 100m
+          memory: 400Mi
+
+    prometheus:
+      configReloaderCpu: 300m
+      prometheusSpec:
+        podMonitorSelector:
+          matchLabels:
+            prometheus-instance: main
+        probeSelector:
+          matchLabels:
+            prometheus-instance: main
+        retention: 4d
+        retentionSize: 9GB
+        ruleSelector:
+          matchLabels:
+            prometheus-instance: main
+        scrapeConfigSelector:
+          matchLabels:
+            prometheus-instance: main
+        serviceMonitorSelector:
+          matchLabels:
+            prometheus-instance: main
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 10Gi
+              storageClassName: gp3
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1Gi
+          limits:
+            cpu: 500m
+            memory: 1Gi
