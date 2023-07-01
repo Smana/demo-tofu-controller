@@ -45,7 +45,6 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-              storageClassName: gp3
         secrets:
           - kube-prometheus-stack-alertmanager
 
@@ -78,6 +77,7 @@ spec:
           alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
           alb.ingress.kubernetes.io/scheme: internal
           alb.ingress.kubernetes.io/target-type: ip
+          external-dns.alpha.kubernetes.io/hostname: grafana-controlplane-0.cloud.ogenki.io
           kubernetes.io/ingress.class: alb
         enabled: true
         pathType: Prefix
@@ -179,7 +179,6 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-              storageClassName: gp3
         resources:
           requests:
             cpu: 200m
