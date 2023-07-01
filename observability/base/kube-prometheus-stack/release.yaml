@@ -63,8 +63,9 @@ spec:
     commonLabels:
       prometheus-instance: main
     grafana:
-      admin:
-        existingSecret: "kube-prometheus-stack-grafana-admin"
+      # For the demo we'll keep the default password
+      # admin:
+      #   existingSecret: "kube-prometheus-stack-grafana-admin"
       defaultDashboardsEnabled: true
       defaultDashboardsTimezone: Europe/Paris
       ingress:
