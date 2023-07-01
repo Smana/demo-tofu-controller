@@ -6,12 +6,11 @@ spec:
   interval: 8m
   path: .
   destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
-  approvePlan: "plan-v5.0.0@sha1:26c38a66f1"
+  storeReadablePlan: human
   sourceRef:
     kind: GitRepository
     name: terraform-aws-vpc
     namespace: flux-system
-  storeReadablePlan: human
   vars:
     - name: name
       value: vpc-dev
