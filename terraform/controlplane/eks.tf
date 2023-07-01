@@ -52,7 +52,7 @@ module "eks" {
 
       capacity_type        = "SPOT"
       force_update_version = true
-      instance_types       = ["m6i.large", "m5.large"]
+      instance_types       = ["c6i.xlarge", "c5.xlarge"]
       labels = {
         Workload = "management"
       }

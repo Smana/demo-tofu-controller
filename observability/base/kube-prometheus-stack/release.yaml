@@ -37,14 +37,6 @@ spec:
           limits:
             cpu: 500m
             memory: 100Mi
-        storage:
-          volumeClaimTemplate:
-            spec:
-              accessModes:
-                - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 10Gi
         secrets:
           - kube-prometheus-stack-alertmanager
 
@@ -160,8 +152,6 @@ spec:
         probeSelector:
           matchLabels:
             prometheus-instance: main
-        retention: 4d
-        retentionSize: 9GB
         ruleSelector:
           matchLabels:
             prometheus-instance: main
@@ -171,14 +161,6 @@ spec:
         serviceMonitorSelector:
           matchLabels:
             prometheus-instance: main
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              accessModes:
-                - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 10Gi
         resources:
           requests:
             cpu: 200m
