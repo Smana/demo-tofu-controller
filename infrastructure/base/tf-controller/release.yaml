@@ -31,9 +31,11 @@ spec:
       serviceAccount:
         annotations:
           eks.amazonaws.com/role-arn: "arn:aws:iam::${aws_account_id}:role/tfcontroller_${cluster_name}"
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        labels:
-          prometheus-instance: main
+    # tf-controller must be started before any other component
+    # The prometheus operator is not installed yet, need to find another way
+    # metrics:
+    #   enabled: true
+    #   serviceMonitor:
+    #     enabled: true
+    #     labels:
+    #       prometheus-instance: main
