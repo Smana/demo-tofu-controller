@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base/external-secrets
+  - ../../base/custom-resources
 
 patches:
   - path: helmrelease.yaml

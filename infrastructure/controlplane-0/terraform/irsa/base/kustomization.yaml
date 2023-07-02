@@ -3,4 +3,5 @@ kind: Kustomization
 
 resources:
   - external-dns.yaml
+  - external-secrets.yaml
   - load-balancer-controller.yaml
