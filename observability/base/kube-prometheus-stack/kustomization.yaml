@@ -4,5 +4,6 @@ namespace: observability
 
 resources:
   - namespace.yaml
+  - externalsecret-grafana-admin.yaml
   - release.yaml
   - source.yaml
