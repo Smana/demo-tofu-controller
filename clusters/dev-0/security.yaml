@@ -13,5 +13,5 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v1beta1
       kind: HelmRelease
-      name: sealed-secrets
+      name: external-secrets
       namespace: kube-system

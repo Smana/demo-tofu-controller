@@ -29,9 +29,8 @@ spec:
     alertmanager:
       enabled: false
     grafana:
-      # For the demo we'll keep the default password
-      # admin:
-      #   existingSecret: "kube-prometheus-stack-grafana-admin"
+      admin:
+        existingSecret: "kube-prometheus-stack-grafana-admin"
       defaultDashboardsEnabled: true
       defaultDashboardsTimezone: Europe/Paris
       ingress:

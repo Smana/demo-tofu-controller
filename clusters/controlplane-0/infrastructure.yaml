@@ -34,7 +34,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controlplane-0/terraform/irsa/controlplane-0
+  path: ./infrastructure/controlplane-0/terraform/irsa/prod
   postBuild:
     substituteFrom:
       - kind: ConfigMap
@@ -103,7 +103,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controlplane-0/terraform/irsa/dev-0
+  path: ./infrastructure/controlplane-0/terraform/irsa/dev
   postBuild:
     substituteFrom:
       - kind: ConfigMap
