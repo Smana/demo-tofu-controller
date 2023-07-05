@@ -11,7 +11,7 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
-      version: "0.12.0"
+      version: "0.15.0"
   interval: 10m0s
   install:
     remediation:
@@ -23,11 +23,7 @@ spec:
       requests:
         cpu: 200m
         memory: 500Mi
-    image:
-      tag: v0.15.0-rc.6
     runner:
-      image:
-        tag: v0.15.0-rc.6
       serviceAccount:
         annotations:
           eks.amazonaws.com/role-arn: "arn:aws:iam::${aws_account_id}:role/tfcontroller_${cluster_name}"
