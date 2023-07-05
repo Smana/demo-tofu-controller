@@ -1,3 +1,3 @@
 # Demo Terraform Controller
 
-**Work in progress** This repo will be used for my personal [blog](https://blog.ogenki.io/).
+[Here](https://blog.ogenki.io/post/terraform-controller/) is the related blog post
