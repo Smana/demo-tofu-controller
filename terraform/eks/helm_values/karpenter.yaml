@@ -1,0 +1,4 @@
+settings:
+  clusterName: ${cluster_name}
+  clusterEndpoint: ${cluster_endpoint}
+  interruptionQueue: ${queue_name}

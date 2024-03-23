@@ -1,0 +1,29 @@
+env:
+  DOCKER_IMG: "ghcr.io/antonbabenko/pre-commit-terraform"
+  DOCKER_TAG: "v1.83.5"
+  REPO_NAME: "action-terraform-ci"
+
+version: "3"
+
+tasks:
+  check:
+    cmds:
+      - task: pre-commit
+      - task: flux-validate
+
+  clean:
+    cmds:
+      - find . -type d -name "*.terraform" -or -name "*.terraform.lock.hcl" | sudo xargs rm -rf
+
+  pre-commit:
+    deps: [clean]
+    cmds:
+      - defer: { task: clean }
+      - |
+        USERID=$(id -u)
+        GROUPID=$(id -g)
+        docker run -e "USER=${USERID}:${GROUPID}" -v {{.USER_WORKING_DIR}}:/lint -w /lint $DOCKER_IMG:$DOCKER_TAG run -a
+
+  flux-validate:
+    cmds:
+      - ./scripts/validate.sh

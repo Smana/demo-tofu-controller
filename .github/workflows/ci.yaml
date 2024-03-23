@@ -7,11 +7,18 @@ on:
 
 jobs:
   pre-commit:
-    name: Terraform CI 🛃
+    name: Pre-commit checks 🛃
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Terraform checks (pre-commit)
-        run: make pre-commit
+
+      - name: Install Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pre-commit checks
+        run: task pre-commit
