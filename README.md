@@ -6,7 +6,7 @@
 
 2 things are checked
 
-* The terraform code quality, conformance and security using [pre-commit-terraform](https://github.com/antonbabenko/pre-commit-terraform).
+* The Opentofu code quality, conformance and security using [pre-commit-terraform](https://github.com/antonbabenko/pre-commit-terraform).
 * The kustomize and Kubernetes conformance using kubeconform and building the kustomize configuration.
 
 In order to run the CI checks locally just run the following command

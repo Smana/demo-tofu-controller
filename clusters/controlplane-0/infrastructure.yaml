@@ -2,12 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: tf-controller
+  name: tofu-controller
   namespace: flux-system
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controlplane-0/terraform/controller
+  path: ./infrastructure/controlplane-0/opentofu/controller
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -20,7 +20,7 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta2
       kind: HelmRelease
-      name: tf-controller
+      name: tofu-controller
       namespace: flux-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -31,7 +31,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controlplane-0/terraform/irsa/prod
+  path: ./infrastructure/controlplane-0/opentofu/irsa/prod
   postBuild:
     substituteFrom:
       - kind: ConfigMap
@@ -43,7 +43,7 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-    - name: tf-controller
+    - name: tofu-controller
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -53,7 +53,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controlplane-0/terraform/aws-resources
+  path: ./infrastructure/controlplane-0/opentofu/aws-resources
   postBuild:
     substitute:
       domain_name: "cloud.ogenki.io"
@@ -67,7 +67,7 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-    - name: tf-controller
+    - name: tofu-controller
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -90,7 +90,7 @@ spec:
     name: flux-system
   dependsOn:
     - name: tf-irsa-controlplane-0
-    - name: tf-custom-resources
+    - name: tf-aws-resources
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -100,7 +100,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/controlplane-0/terraform/irsa/dev
+  path: ./infrastructure/controlplane-0/opentofu/irsa/dev
   postBuild:
     substituteFrom:
       - kind: ConfigMap
@@ -112,5 +112,5 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-    - name: tf-custom-resources
-    - name: tf-controller
+    - name: tf-aws-resources
+    - name: tofu-controller
