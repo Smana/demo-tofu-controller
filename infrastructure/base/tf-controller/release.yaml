@@ -6,11 +6,10 @@ metadata:
 spec:
   chart:
     spec:
-      chart: tf-controller
       sourceRef:
-        kind: HelmRepository
-        name: tf-controller
-      version: ">=0.16.0-rc.4"
+        kind: GitRepository
+        name: tofu-controller
+      chart: "./charts/tf-controller"
   interval: 1h0s
   releaseName: tf-controller
   targetNamespace: flux-system
@@ -34,14 +33,8 @@ spec:
         memory: 64Mi
     caCertValidityDuration: 24h
     certRotationCheckFrequency: 30m
-    image:
-      tag: v0.16.0-rc.4
     runner:
-      image:
-        tag: v0.16.0-rc.4
       grpc:
         maxMessageSize: 30
     branchPlanner:
       enabled: true
-      image:
-        tag: v0.16.0-rc.4

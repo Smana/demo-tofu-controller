@@ -45,12 +45,6 @@ variable "karpenter_version" {
   type        = string
 }
 
-variable "ebs_csi_driver_chart_version" {
-  description = "EBS CSI Driver Helm chart version"
-  default     = "2.25.0"
-  type        = string
-}
-
 variable "gateway_api_version" {
   description = "Gateway API CRDs version"
   default     = "v1.0.0"
