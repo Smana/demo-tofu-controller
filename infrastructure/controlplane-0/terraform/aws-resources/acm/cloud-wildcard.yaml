@@ -21,8 +21,5 @@ spec:
     - name: tags
       value:
         Name: "${domain_name}"
-  varsFrom:
-    - kind: Secret
-      name: route53-cloud-hostedzone
   writeOutputsToSecret:
     name: acm-cloud
