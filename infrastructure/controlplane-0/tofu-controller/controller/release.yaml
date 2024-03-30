@@ -9,7 +9,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: tofu-controller
-      chart: "./charts/tf-controller"
+      chart: "./charts/tofu-controller"
   interval: 1h0s
   releaseName: tofu-controller
   targetNamespace: flux-system
@@ -22,6 +22,7 @@ spec:
     remediation:
       retries: -1
   values:
+    installCRDs: false
     replicaCount: 3
     concurrency: 24
     allowBreakTheGlass: true

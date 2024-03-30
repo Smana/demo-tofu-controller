@@ -1,15 +1,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: security
+  name: tofu-controller
   namespace: flux-system
 spec:
   prune: true
   interval: 4m0s
+  path: ./infrastructure/controlplane-0/tofu-controller
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./security/controlplane-0
   postBuild:
     substitute:
       domain_name: "cloud.ogenki.io"
@@ -17,9 +17,7 @@ spec:
       - kind: ConfigMap
         name: eks-controlplane-0-vars
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta2
       kind: HelmRelease
-      name: external-secrets
-      namespace: security
-  dependsOn:
-    - name: tofu-controller
+      name: tofu-controller
+      namespace: flux-system

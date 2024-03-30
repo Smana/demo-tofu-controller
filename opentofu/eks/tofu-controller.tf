@@ -36,3 +36,26 @@ resource "aws_eks_pod_identity_association" "tf_controller" {
   service_account = "tf-runner"
   role_arn        = module.iam_role_tf_controller.iam_role_arn
 }
+
+# Create the secret used by the branch planner (Github token).
+data "aws_secretsmanager_secret" "tf_controller_branch_planner_token" {
+  name = "github/tofu-controller-github-token"
+}
+
+data "aws_secretsmanager_secret_version" "tf_controller_branch_planner_token" {
+  secret_id = data.aws_secretsmanager_secret.tf_controller_branch_planner_token.id
+}
+
+resource "kubernetes_secret" "tf_controller_branch_planner_token" {
+  metadata {
+    name      = "branch-planner-token"
+    namespace = "flux-system"
+    labels = {
+      managed-by = "opentofu"
+    }
+  }
+
+  data = {
+    "token" = data.aws_secretsmanager_secret_version.tf_controller_branch_planner_token.secret_string
+  }
+}
