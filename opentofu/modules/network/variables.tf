@@ -21,14 +21,21 @@ variable "private_domain_name" {
   type        = string
 }
 
+variable "tailscale_tailnet_name" {
+  description = "Tailnet Name. ref: https://tailscale.com/kb/1136/tailnet"
+  type        = string
+}
 
-variable "tailscale" {
-  type = map(string)
-  default = {
-    subnet_router_name = ""
-    api_key            = ""
-    tailnet            = ""
-  }
+variable "tailscale_subnet_router_name" {
+  description = "Tailscale subnet router name"
+  type        = string
+}
+
+variable "tailscale_api_key_secretsmanager_name" {
+  type        = string
+  description = "SecretsManager name from where to retrieve Tailscale API key"
+  default     = "tailscale/api-key"
+  sensitive   = true
 }
 
 variable "tags" {

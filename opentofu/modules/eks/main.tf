@@ -1,105 +1,98 @@
-################################################################################
-# EKS Module
-################################################################################
-
+# Demo cluster we need to access to the API publicly
+#tfsec:ignore:aws-eks-no-public-cluster-access
+#tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.4"
+  version = "~> 20"
 
   cluster_name                   = var.cluster_name
   cluster_version                = var.cluster_version
-  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access = false
 
   cluster_addons = {
-    kube-proxy = {
+    coredns = {
       most_recent = true
       configuration_values = jsonencode({
-        mode = "ipvs"
-        ipvs = {
-          scheduler = "lc"
-        }
+        tolerations = [
+          {
+            operator = "Exists"
+          }
+        ]
       })
     }
-    coredns = {
+    kube-proxy = {
       most_recent = true
     }
     vpc-cni = {
-      # Specify the VPC CNI addon should be deployed before compute to ensure
-      # the addon is configured before data plane compute resources are created
-      # See README for further details
       before_compute = true
-      most_recent    = true # To ensure access to the latest settings provided
-      configuration_values = jsonencode({
-        env = {
-          # Reference https://aws.github.io/aws-eks-best-practices/reliability/docs/networkmanagement/#cni-custom-networking
-          AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG = "true"
-          ENI_CONFIG_LABEL_DEF               = "topology.kubernetes.io/zone"
-
-          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-          ENABLE_PREFIX_DELEGATION = "true"
-          WARM_PREFIX_TARGET       = "1"
-        }
-      })
+      most_recent    = true
+    }
+    eks-pod-identity-agent = {
+      most_recent = true
     }
   }
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.private_subnets
+  enable_cluster_creator_admin_permissions = true
 
-  manage_aws_auth_configmap = true
-  aws_auth_roles = [
-    # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
-    {
-      rolearn  = module.karpenter.role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-    },
-  ]
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:user/smana"
-      username = "smana"
-      groups   = ["system:masters"]
-    },
-  ]
+  #access_entries = {
+  # # No need to define this user as this is the one that creates the cluster and the variable 'enable_cluster_creator_admin_permissions' is set to true
+  #  smana = {
+  #    user_name         = "smana"
+  #    principal_arn     = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:user/smana"
+  #    kubernetes_groups = ["cluster-admin"]
+  #  }
+  #}
+
+  vpc_id                   = var.vpc_id
+  subnet_ids               = var.private_subnets_ids
+  control_plane_subnet_ids = var.intra_subnets_ids
+
+  cluster_security_group_additional_rules = {
+    ingress_source_security_group_id = {
+      description              = "Ingress from the Tailscale security group to the API server"
+      protocol                 = "tcp"
+      from_port                = 443
+      to_port                  = 443
+      type                     = "ingress"
+      source_security_group_id = var.tailscale_security_group_id
+    }
+  }
 
   eks_managed_node_groups = {
-    initial = {
-      name        = "initial"
-      description = "Initial EKS managed node group used for karpenter"
+    main = {
+      name        = "main"
+      description = "EKS managed node group used to bootstrap Karpenter"
+      # Use a single subnet for costs reasons
+      subnet_ids = [element(var.private_subnets_ids, 0)]
 
       min_size     = 2
-      max_size     = 4
-      desired_size = 3
+      max_size     = 3
+      desired_size = 2
 
-      instance_types = ["m6i.large", "m5.large"]
+      # Bottlerocket
+      use_custom_launch_template = false
+      ami_type                   = "BOTTLEROCKET_x86_64"
+      platform                   = "bottlerocket"
+
+      capacity_type        = "SPOT"
+      force_update_version = true
+      instance_types       = ["c6i.xlarge", "c5.xlarge"]
+      taints = [
+        {
+          key    = "node.cilium.io/agent-not-ready"
+          value  = "true"
+          effect = "NO_EXECUTE"
+        }
+      ]
     }
   }
 
   tags = {
-    "karpenter.sh/discovery" = var.env
+    "karpenter.sh/discovery" = var.cluster_name
   }
 
   // For the load balancer to work refer to https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/faq.md
   node_security_group_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = null
   }
-}
-
-module "karpenter" {
-  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  version = "~> 19.10"
-
-  cluster_name                    = module.eks.cluster_name
-  irsa_oidc_provider_arn          = module.eks.oidc_provider_arn
-  irsa_namespace_service_accounts = ["karpenter:karpenter"]
-
-  # Make use of the IAM role created for the management EKS node group
-  create_iam_role = false
-  iam_role_arn    = module.eks.eks_managed_node_groups["initial"].iam_role_arn
-
-  tags = var.tags
 }

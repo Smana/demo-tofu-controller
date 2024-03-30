@@ -1,6 +1,5 @@
 # Network and VPN server
 
-
 ## Provision a Tailscale subnet router
 
 ### What is a subnet router?

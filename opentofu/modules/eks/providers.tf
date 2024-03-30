@@ -1,5 +1,6 @@
 provider "aws" {
-  region = var.region
+  region = "us-east-1"
+  alias  = "virginia"
 }
 
 provider "flux" {
@@ -9,7 +10,8 @@ provider "flux" {
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   }
   git = {
-    url = "ssh://git@github.com/${var.github_owner}/${var.github_repository}.git"
+    url    = "ssh://git@github.com/${var.github_owner}/${var.github_repository}.git"
+    branch = var.github_branch
     ssh = {
       username    = "git"
       private_key = tls_private_key.flux.private_key_pem
@@ -17,62 +19,31 @@ provider "flux" {
   }
 }
 
+provider "helm" {
+  kubernetes {
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+    token                  = data.aws_eks_cluster_auth.cluster_auth.token
+  }
+}
+
 provider "kubectl" {
   apply_retry_count      = 15
   host                   = module.eks.cluster_endpoint
+  token                  = data.aws_eks_cluster_auth.cluster_auth.token
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   load_config_file       = false
-
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    args = [
-      "eks",
-      "get-token",
-      "--cluster-name",
-      var.cluster_name
-    ]
-  }
 }
 
 
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    args = [
-      "eks",
-      "get-token",
-      "--cluster-name",
-      module.eks.cluster_name
-    ]
-  }
-}
-
-
-
-provider "helm" {
-  kubernetes {
-    host                   = module.eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      args = [
-        "eks",
-        "get-token",
-        "--cluster-name",
-        module.eks.cluster_name
-      ]
-    }
-  }
+  token                  = data.aws_eks_cluster_auth.cluster_auth.token
 }
 
 
 provider "github" {
   owner = var.github_owner
-  token = var.github_token
+  token = jsondecode(data.aws_secretsmanager_secret_version.github_token.secret_string)["github-token"]
 }

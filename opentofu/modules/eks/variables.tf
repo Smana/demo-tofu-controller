@@ -9,17 +9,29 @@ variable "region" {
   type        = string
 }
 
-# Network
 variable "vpc_id" {
-  description = "ID of the VPC where the cluster security group will be provisioned"
+  description = "ID of the VPC where the cluster security group will be provisioned."
   type        = string
-  default     = null
 }
 
-variable "private_subnets" {
-  description = "A list of subnet IDs where the nodes/node groups will be provisioned. If `control_plane_subnet_ids` is not provided, the EKS cluster control plane (ENIs) will be provisioned in these subnets"
+variable "vpc_cidr_block" {
+  description = "The CIDR block of the VPC."
+  type        = string
+}
+
+variable "private_subnets_ids" {
+  description = "A list of private subnet IDs where the nodes/node groups will be provisioned."
   type        = list(string)
-  default     = []
+}
+
+variable "intra_subnets_ids" {
+  description = "A list of subnet IDs where the controlplane will be provisionned."
+  type        = list(string)
+}
+
+variable "tailscale_security_group_id" {
+  description = "Tailscale subnet router security group ID"
+  type        = string
 }
 
 # EKS
@@ -30,7 +42,37 @@ variable "cluster_name" {
 
 variable "cluster_version" {
   description = "k8s cluster version"
-  default     = "1.27"
+  default     = "1.29"
+  type        = string
+}
+
+variable "enable_ssm" {
+  description = "If true, allow to connect to the instances using AWS Systems Manager"
+  type        = bool
+  default     = false
+}
+
+variable "iam_role_additional_policies" {
+  description = "Additional policies to be added to the IAM role"
+  type        = map(string)
+  default     = {}
+}
+
+variable "cilium_version" {
+  description = "Cilium cluster version"
+  default     = "1.15.0"
+  type        = string
+}
+
+variable "karpenter_version" {
+  description = "Karpenter version"
+  default     = "v0.34.3"
+  type        = string
+}
+
+variable "gateway_api_version" {
+  description = "Gateway API CRDs version"
+  default     = "v1.0.0"
   type        = string
 }
 
@@ -40,15 +82,22 @@ variable "github_owner" {
   description = "github owner"
 }
 
-variable "github_token" {
+variable "github_token_secretsmanager_name" {
   type        = string
-  description = "github token"
+  description = "SecretsManager name from where to retrieve the Github token. (The key must be 'github-token')"
+  default     = "github/flux-github-token"
   sensitive   = true
 }
 
 variable "github_repository" {
   type        = string
   description = "github repository name"
+}
+
+variable "github_branch" {
+  type        = string
+  default     = "main"
+  description = "Github branch name"
 }
 
 variable "tags" {

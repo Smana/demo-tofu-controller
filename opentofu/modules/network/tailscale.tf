@@ -25,7 +25,7 @@ resource "tailscale_acl" "this" {
     autoApprovers = {
       routes = {
         # tflint-ignore: terraform_deprecated_interpolation
-        "${module.vpc.vpc_cidr_block}" = [var.tailscale.tailnet]
+        "${module.vpc.vpc_cidr_block}" = [var.tailscale_tailnet_name]
       }
     }
 
@@ -59,7 +59,7 @@ module "tailscale_subnet_router" {
   region = var.region
   env    = var.env
 
-  name     = var.tailscale.subnet_router_name
+  name     = var.tailscale_subnet_router_name
   auth_key = tailscale_tailnet_key.this.key
 
   vpc_id                = module.vpc.vpc_id

@@ -28,7 +28,6 @@ module "vpc" {
   }
 
   tags = merge(
-    local.tags,
     var.tags
   )
 }
