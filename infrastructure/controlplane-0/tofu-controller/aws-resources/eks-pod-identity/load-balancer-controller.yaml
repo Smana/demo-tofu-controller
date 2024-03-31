@@ -1,0 +1,23 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: epi-load-balancer-controller
+spec:
+  approvePlan: auto
+  destroyResourcesOnDeletion: true
+  interval: 8m
+  sourceRef:
+    kind: GitRepository
+    name: terraform-aws-eks-pod-identity
+    namespace: flux-system
+  vars:
+    - name: name
+      value: aws-lbc
+    - name: attach_aws_lb_controller_policy
+      value: true
+    - name: associations
+      value:
+        epi:
+          cluster_name: ${cluster_name}
+          namespace: kube-system
+          service_account: load-balancer-controller

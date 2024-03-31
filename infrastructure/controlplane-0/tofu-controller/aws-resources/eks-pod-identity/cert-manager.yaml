@@ -1,0 +1,27 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: epi-cert-manager
+spec:
+  approvePlan: auto
+  destroyResourcesOnDeletion: true
+  interval: 8m
+  sourceRef:
+    kind: GitRepository
+    name: terraform-aws-eks-pod-identity
+    namespace: flux-system
+  vars:
+    - name: name
+      value: cert-manager
+    - name: attach_cert_manager_policy
+      value: true
+    - name: cert_manager_hosted_zone_arns
+      value:
+        - "arn:aws:route53:::hostedzone/Z0556025WML8RREPPCES" # Private
+        - "arn:aws:route53:::hostedzone/Z002027037R5RFCG05YY6" # Public
+    - name: associations
+      value:
+        epi:
+          cluster_name: ${cluster_name}
+          namespace: security
+          service_account: cert-manager

@@ -1,0 +1,29 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: eks-dev-0
+spec:
+  approvePlan: auto
+  destroyResourcesOnDeletion: true
+  storeReadablePlan: human
+  interval: 8m
+  path: ./opentofu/modules/eks
+  sourceRef:
+    kind: GitRepository
+    name: demo-tofu-controller
+    namespace: flux-system
+  vars:
+    - name: cluster_name
+      value: "dev-0"
+    - name: env
+      value: dev
+  varsFrom:
+    - kind: Secret
+      name: vpc-dev
+      varsKeys:
+        - vpc_id
+        - private_subnets
+    - kind: Secret
+      name: flux-github-creds
+  writeOutputsToSecret:
+    name: eks-dev-0-vars

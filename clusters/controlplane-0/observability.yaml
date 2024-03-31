@@ -15,9 +15,6 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: eks-controlplane-0-vars
-      - kind: Secret
-        name: eks-controlplane-0-vars
-        optional: true
   dependsOn:
     - name: security
   healthChecks:

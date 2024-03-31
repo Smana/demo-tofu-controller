@@ -1,0 +1,9 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: tofu-controller
+spec:
+  interval: 5m0s
+  url: https://github.com/flux-iac/tofu-controller
+  ref:
+    tag: v0.16.0-rc.4

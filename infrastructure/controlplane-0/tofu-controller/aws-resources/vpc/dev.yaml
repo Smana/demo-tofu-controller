@@ -1,0 +1,46 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: vpc-dev
+spec:
+  interval: 8m
+  path: .
+  destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
+  storeReadablePlan: human
+  sourceRef:
+    kind: GitRepository
+    name: terraform-aws-vpc
+    namespace: flux-system
+  vars:
+    - name: name
+      value: vpc-dev
+    - name: cidr
+      value: "10.23.0.0/16"
+    - name: azs
+      value:
+        - "eu-west-3a"
+        - "eu-west-3b"
+        - "eu-west-3c"
+    - name: private_subnets
+      value:
+        - "10.23.0.0/19"
+        - "10.23.32.0/19"
+        - "10.23.64.0/19"
+    - name: public_subnets
+      value:
+        - "10.23.96.0/24"
+        - "10.23.97.0/24"
+        - "10.23.98.0/24"
+    - name: enable_nat_gateway
+      value: true
+    - name: single_nat_gateway
+      value: true
+    - name: private_subnet_tags
+      value:
+        "kubernetes.io/role/elb": 1
+        "karpenter.sh/discovery": dev
+    - name: public_subnet_tags
+      value:
+        "kubernetes.io/role/elb": 1
+  writeOutputsToSecret:
+    name: vpc-dev
