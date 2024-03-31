@@ -5,6 +5,6 @@ namespace: flux-system
 resources:
   - acm
   - eks
-  - irsa
+  - eks-pod-identity
   - route53-zone
   - vpc

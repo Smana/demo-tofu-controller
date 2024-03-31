@@ -7,7 +7,7 @@ spec:
   destroyResourcesOnDeletion: true
   storeReadablePlan: human
   interval: 8m
-  path: ./opentofu/eks
+  path: ./opentofu/modules/eks
   sourceRef:
     kind: GitRepository
     name: demo-tofu-controller

@@ -4,7 +4,6 @@ kind: Terraform
 metadata:
   name: route53-zone-cloud
 spec:
-  approvePlan: false # Need to restore a backup when the cluster is recreated
   # breakTheGlass: true
   destroyResourcesOnDeletion: false # Keep the zone after deletion
   storeReadablePlan: human
