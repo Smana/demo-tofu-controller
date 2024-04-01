@@ -1,10 +1,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: terraform-aws-eks-pod-identity
+  name: terraform-aws-iam
   namespace: flux-system
 spec:
   interval: 30s
   ref:
-    tag: v1.1.0
-  url: https://github.com/terraform-aws-modules/terraform-aws-eks-pod-identity
+    tag: v5.37.2
+  url: https://github.com/terraform-aws-modules/terraform-aws-iam

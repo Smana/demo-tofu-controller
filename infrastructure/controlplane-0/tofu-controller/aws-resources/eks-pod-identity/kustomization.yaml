@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
   - cert-manager.yaml
-  - external-dns.yaml
+  #  - external-dns.yaml # Waiting for a release that supports EPI
   - external-secrets.yaml
   - load-balancer-controller.yaml

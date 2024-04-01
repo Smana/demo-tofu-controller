@@ -6,5 +6,6 @@ resources:
   - acm
   - eks
   - eks-pod-identity
+  - irsa
   - route53-zone
   - vpc
