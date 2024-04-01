@@ -1,7 +1,10 @@
 # Demo Opentofu Controller
 
 ℹ️ [Blog post written in 2022](https://blog.ogenki.io/post/terraform-controller/)
+
 🚧 _The second part is being written and will be soon available ..._.
+
+This repository is dedicated to showcasing the **Flux Opentofu Controller**, a tool designed to bridge the gap between Kubernetes and cloud resource management. By leveraging the power and the flexibility of Opentofu modules, the Flux Controller enables seamless management of cloud infrastructure directly from within a Kubernetes cluster. Set within an Amazon EKS cluster, this demonstration provides a hands-on example of deploying the tofu-controller and configuring it to manage resources effectively. The core configurations and examples reside in `infrastructure/controlplane-0/tofu-controller`.
 
 ## 🔄 Flux Dependencies matter
 
