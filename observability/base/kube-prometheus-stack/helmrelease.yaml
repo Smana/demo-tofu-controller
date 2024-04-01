@@ -10,14 +10,13 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
-        namespace: observability
-      version: "47.1.0"
+        namespace: flux-system
+      version: "57.2.0"
   interval: 10m0s
   timeout: 30m
   install:
     remediation:
       retries: 3
-    crds: Create
     createNamespace: true
   upgrade:
     crds: CreateReplace
@@ -25,10 +24,18 @@ spec:
     global:
       rbac:
         createAggregateClusterRoles: true
+    crds:
+      enabled: false
+
+    commonLabels:
+      prometheus-instance: main
 
     alertmanager:
       enabled: false
     grafana:
+      serviceMonitor:
+        labels:
+          prometheus-instance: main
       admin:
         existingSecret: "kube-prometheus-stack-grafana-admin"
       defaultDashboardsEnabled: true
@@ -60,13 +67,53 @@ spec:
               editable: true
               options:
                 path: /var/lib/grafana/dashboards/flux
+            - name: "karpenter"
+              orgId: 1
+              folder: "Karpenter"
+              type: file
+              disableDeletion: true
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/karpenter
+            - name: "views"
+              orgId: 1
+              folder: "Views"
+              type: file
+              disableDeletion: true
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/views
       dashboards:
         flux:
           flux-controlplane:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+            url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
             datasource: Prometheus
           flux-cluster:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
+            url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
+            datasource: Prometheus
+          flux-logs:
+            url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+            datasource: Loki
+        karpenter:
+          karpenter-capacity:
+            url: https://karpenter.sh/v0.34/getting-started/getting-started-with-karpenter/karpenter-capacity-dashboard.json
+            datasource: Prometheus
+          karpenter-performance:
+            url: https://karpenter.sh/v0.34/getting-started/getting-started-with-karpenter/karpenter-performance-dashboard.json
+            datasource: Prometheus
+        # Dashboards from https://github.com/dotdc/grafana-dashboards-kubernetes
+        views:
+          k8s-views-global:
+            url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+            datasource: Prometheus
+          k8s-views-namespaces:
+            url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+            datasource: Prometheus
+          k8s-views-nodes:
+            url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+            datasource: Prometheus
+          k8s-views-pods:
+            url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
             datasource: Prometheus
     kube-state-metrics:
       prometheusScrape: false # disable scrape annotation as we use servicemonitor
@@ -100,7 +147,6 @@ spec:
         requests:
           cpu: 100m
           memory: 400Mi
-
     prometheus:
       configReloaderCpu: 300m
       prometheusSpec:
@@ -126,3 +172,7 @@ spec:
           limits:
             cpu: 500m
             memory: 1Gi
+    kubelet:
+      servicemonitor:
+        additionalLabels:
+          prometheus-instance: main

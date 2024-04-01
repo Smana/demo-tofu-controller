@@ -30,6 +30,6 @@ inputs = {
 
   github_owner      = "Smana"
   github_repository = "demo-tofu-controller"
-  github_branch     = "test_cert-manager"
+  github_branch     = "dummy" # Change the branch to the one tested
 }
 
