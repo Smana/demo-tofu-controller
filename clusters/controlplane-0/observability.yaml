@@ -12,6 +12,8 @@ spec:
     kind: GitRepository
     name: flux-system
   postBuild:
+    substitute:
+      domain_name: "cloud.ogenki.io"
     substituteFrom:
       - kind: ConfigMap
         name: eks-controlplane-0-vars

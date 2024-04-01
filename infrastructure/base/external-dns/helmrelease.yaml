@@ -30,7 +30,6 @@ spec:
     domainFilters: ["${domain_name}"]
     logFormat: json
     txtOwnerId: "${cluster_name}"
-    serviceAccount:
     resources:
       limits:
         memory: 100Mi

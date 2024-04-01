@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: external-secrets
         namespace: flux-system
-      version: "0.9.0"
+      version: "0.9.13"
   interval: 10m0s
   install:
     createNamespace: true
@@ -88,4 +88,4 @@ spec:
       resources:
         limits:
           cpu: 100m
-          memory: 80Mi
+          memory: 280Mi

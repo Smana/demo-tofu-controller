@@ -27,7 +27,8 @@ spec:
               - key: kubernetes.io/metadata.name
                 operator: In
                 values:
-                  - echo
+                  - observability
+                  - flux-system
       tls:
         mode: Terminate
         certificateRefs:
