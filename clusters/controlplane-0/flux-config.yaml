@@ -17,4 +17,8 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: eks-controlplane-0-vars
-#  healthChecks: []
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: capacitor
+      namespace: flux-system

@@ -23,11 +23,11 @@ This diagram can be hard to understand so these are the key information:
 
 ## 🚀 Deploy the ControlPlane
 
-# Tailscale Terraform Issue Workaround
+### Tailscale Terraform Issue Workaround
 
 Due to a known issue with Tailscale and Terraform integration as outlined in [Tailscale issue #182](https://github.com/tailscale/terraform-provider-tailscale/issues/182), the Access Control Lists (ACLs) must be imported manually before proceeding with the Terraform apply. This step ensures that the ACLs are properly recognized by Terraform's state management, avoiding conflicts or errors during the infrastructure deployment process.
 
-## Importing ACLs
+#### Importing ACLs
 
 First, navigate to the `terragrunt/network` directory where the Terraform network configuration is located. Use the following command to import the existing Tailscale ACLs into your Terraform state.
 
@@ -36,7 +36,7 @@ cd terragrunt/network
 terragrunt import --var-file variables.tfvars tailscale_acl.this acl
 ```
 
-## Deploying Infrastructure with Terragrunt
+#### Deploying Infrastructure with Terragrunt
 
 Once the ACLs are imported, you can proceed with deploying your infrastructure. The deployment includes three main modules as visualized below:
 
@@ -55,6 +55,7 @@ graph LR;
 To deploy all modules and apply the configuration changes, use the following Terragrunt command:
 
 ```console
+cd terragrunt/tofu-controller
 terragrunt run-all apply
 ```
 

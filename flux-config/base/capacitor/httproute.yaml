@@ -4,7 +4,7 @@ metadata:
   name: capacitor
 spec:
   parentRefs:
-    - name: platform-private
+    - name: platform-public # should be exposed using a private gateway for prod
       namespace: infrastructure
   hostnames:
     - "capacitor.${domain_name}"
