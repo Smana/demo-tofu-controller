@@ -55,6 +55,7 @@ graph LR;
 To deploy all modules and apply the configuration changes, use the following Terragrunt command:
 
 ```console
+cd terragrunt/tofu-controller
 terragrunt run-all apply
 ```
 

@@ -30,6 +30,6 @@ inputs = {
 
   github_owner      = "Smana"
   github_repository = "demo-tofu-controller"
-  github_branch     = "first_tofu-controller_test"
+  github_branch     = "test_cert-manager"
 }
 
