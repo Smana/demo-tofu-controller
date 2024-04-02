@@ -20,5 +20,9 @@ spec:
           comment: "Experimentations for blog.ogenki.io"
           tags:
             Name: "${domain_name}"
+        priv.${domain_name}:
+          comment: "Experimentations for blog.ogenki.io, private zone"
+          tags:
+            Name: priv."${domain_name}"
   writeOutputsToSecret:
     name: route53-zone-cloud
