@@ -15,4 +15,4 @@ spec:
     kind: OCIRepository
     name: capacitor
   dependsOn:
-    - name: flux-config
+    - name: infrastructure

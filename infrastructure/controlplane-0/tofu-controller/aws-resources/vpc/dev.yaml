@@ -7,6 +7,7 @@ spec:
   path: .
   destroyResourcesOnDeletion: true # You wouldn't do that on a prod env ;)
   storeReadablePlan: human
+  approvePlan: plan-v5.7.0-47e101dc71
   sourceRef:
     kind: GitRepository
     name: terraform-aws-vpc
